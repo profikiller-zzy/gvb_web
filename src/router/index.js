@@ -32,6 +32,11 @@ const router = createRouter({
             path : "system_config",
             name : "system_config",
             component: ()=>import("../views/admin/system_management/system_config.vue"),
+          },
+          {
+            path : "user_list",
+            name : "user_list",
+            component: ()=>import("../views/admin/user_management/user_list.vue"),
           }
         ]
     }

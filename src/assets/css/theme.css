@@ -7,14 +7,14 @@
     --leftside : #ceeefa;
     --router-view-bg : white;
     --card_bg : #8bc2f8;
-    --card_boder : #98ff95;
+    --card_boder : #a8afa8;
     --tetx: #4e4e50;
     --active: #4e4e50;
 }
 
 .dark-theme {
     --theme-color : #a6daff;
-    --bg : #443636;
+    --bg : #535353;
     --header-bg: #969696;
     --menu-bg : #5c5d5e;
     --order : #535353;
