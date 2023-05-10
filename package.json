@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode dev",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "ant-design-vue": "^3.2.20",
+    "axios": "^1.4.0",
     "font-awesome": "^4.7.0",
     "pinia": "^2.0.35",
     "vue": "^3.2.47",

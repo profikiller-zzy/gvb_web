@@ -10,7 +10,6 @@
     </div>
 
     <div class="gvb_admin_left_sideBar_body flex">
-
     </div>
   </aside>
 </template>
