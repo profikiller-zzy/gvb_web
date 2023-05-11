@@ -52,7 +52,7 @@
       <a-pagination
         v-model:current="page.pageNum"
         v-model:page-size="page.pageSize"
-        :total="85"
+        :total="data.count"
         :show-total="total => `共 ${total} 条`"
         :hideOnSinglePage = "true"
         :showSizeChanger = "false"
@@ -64,6 +64,7 @@
 <script setup>
 import {reactive} from "vue";
 import {getNowFormatDate} from "@/utils/date";
+import {userListApi} from "@/api/user_api";
 
 console.log(import.meta.env)
 
@@ -85,41 +86,26 @@ const data = reactive(
         {title: '注册时间', dataIndex: 'created_at', key: 'created_at'},
         {title: '操作', dataIndex: 'action', key: 'action'},
       ],
-      list:[
-        {
-          "id": 1,
-          "created_at": "2023-05-05T16:04:32+08:00",
-          "nick_name": "管理员一号",
-          "avatar": "/uploads/avatar/default.png",
-          "email": "3****@qq.com",
-          "addr": "内网地址",
-          "ip": "127.0.0.1",
-          "role": "管理员",
-          "sign_status": "邮箱"
-        },
-        {
-          "id": 2,
-          "created_at": "2023-05-05T19:21:48+08:00",
-          "nick_name": "企鹅1号",
-          "avatar": "/uploads/avatar/default.png",
-          "email": "",
-          "addr": "内网地址",
-          "ip": "127.0.0.1",
-          "role": "用户",
-          "sign_status": "邮箱"
-        }
-      ],
+      list:[],
       selectedRowKeys: [],
+      count: 0,
     })
 
 function onSelectChange(selectedKeys){
-  data.selectedRowKeys = selectedKeys;
-  console.log(data.selectedRowKeys)
+  data.selectedRowKeys = selectedKeys
 }
+
+async function getUserList() {
+  let res = await userListApi({})
+  data.list = res.data.data_list
+  data.count = res.data.count
+  console.log(res)
+}
+
+getUserList()
 
 // 批量删除
 function removeInBatches(){
-
 }
 </script>
 

@@ -1,12 +1,30 @@
 import { defineStore } from 'pinia'
+import { message } from 'ant-design-vue';
 
+const data = {
+  token: "",
+  avatar: "",
+  exp: 1683726766,
+  nick_name: "",
+  role: 0,
+  user_id: 0,
+}
 export const useGlobalStore = defineStore('gvb', {
   state:()=>{
     return {
-      Theme : true
+      Theme : true, // true 白天 false 黑夜
+      userInfo: {
+        token: "",
+        avatar: "",
+        exp: 1683726766,
+        nick_name: "",
+        role: 0,
+        user_id: 0,
+      }
     }
   },
   actions:{
+    // 切换主题
     switchTheme(){
       this.Theme = !this.Theme
       if (this.Theme){
@@ -19,6 +37,7 @@ export const useGlobalStore = defineStore('gvb', {
         localStorage.setItem("theme", "dark")
       }
     },
+    // 加载主题
     loadTheme(){
       const theme = localStorage.getItem("theme")
       if (theme === "dark"){
@@ -27,6 +46,36 @@ export const useGlobalStore = defineStore('gvb', {
       } else {
         this.Theme = true
       }
+    },
+    setToken(tokenStr){
+      localStorage.setItem("token", tokenStr)
+    },
+    setUserInfo(info) {
+      // 将用户信息存储在本地
+      this.$patch({
+        userInfo : info,
+      })
+      // 持久化
+      localStorage.setItem("userInfo", JSON.stringify(info))
+    },
+    // 加载userInfo，主要是判断登录状态有没有过期
+    loadUserInfo() {
+      let info = localStorage.getItem("userInfo")
+      if (info === null){
+        return
+      }
+      // JSON解析
+      let userInfo = JSON.parse(info)
+      // 判断时间是否过期(后端传过来的时间以秒为单位，而前端以毫秒为单位，所以要乘1000)
+      let exp = userInfo.exp * 1000
+      let now = new Date().getTime()
+      if ( (exp - now) < 0) {
+        // 过期了
+        message.warn("登录状态已经过期")
+        // TODO 将当前页面跳转到登录页面
+        return;
+      }
+      this.setUserInfo(userInfo)
     }
   }
 })

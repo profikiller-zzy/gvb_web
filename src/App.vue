@@ -2,6 +2,14 @@
   <router-view/>
 </template>
 
+<script setup>
+import {useGlobalStore} from "@/stores/global_store";
+
+const globalStore = useGlobalStore()
+
+globalStore.loadUserInfo()
+</script>
+
 <style lang="scss">
 
 * {

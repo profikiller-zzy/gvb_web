@@ -11,7 +11,7 @@
         </a>
       <template #overlay>
         <a-menu @click="menuItemClick">
-          <a-menu-item key = "login">
+          <a-menu-item key = "user_center">
             <a href="javascript:;">个人中心</a>
           </a-menu-item>
           <a-menu-item key = "my_message">
@@ -19,6 +19,9 @@
           </a-menu-item>
           <a-menu-item key = "article_list">
             <a href="javascript:;">文章列表</a>
+          </a-menu-item>
+          <a-menu-item key = "login">
+            <a href="javascript:;">返回登录</a>
           </a-menu-item>
           <a-menu-item key = "logout">
             <a href="javascript:;">注销退出</a>
@@ -31,9 +34,10 @@
 </template>
 
 <script setup>
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
-const Router = useRouter()
+const router = useRouter()
+const route = useRoute()
 const props = defineProps({
   // 是否显示头像部分
   isAvatarDisplay: {
@@ -45,10 +49,18 @@ const props = defineProps({
 function menuItemClick({key}) {
   if (key == "logout"){
     console.log("logout")
-  } else {
-    Router.push(
+    return
+  } else if(key === "login") {
+    router.push(
         {
-          name : key,
+          name: key,
+          redirect_url: route.path
+        }
+    )
+  } else {
+    router.push(
+        {
+          name: key,
         }
     )
   }

@@ -18,16 +18,24 @@
 </template>
 
 <script setup>
+import jwt_decode from 'jwt-decode'
 import {reactive} from "vue";
 import { message } from 'ant-design-vue';
 import axios from "axios";
 import {Ser} from "@/service/service";
-import {emailLoginApi} from "@/api/emailLogin";
+import {emailLoginApi} from "@/api/user_api";
+import {parseToken} from "@/utils/jwt";
+import {useGlobalStore} from "@/stores/global_store";
+import {useRoute, useRouter} from "vue-router";
 
 const data = reactive({
   user_name: "",
   password: "",
 })
+const globalStore = useGlobalStore()
+const router = useRouter()
+const route = useRoute()
+
 
 async function emailLogin(){
   if (data.user_name.trim() === ""){
@@ -39,13 +47,29 @@ async function emailLogin(){
     return
   }
 
+  // res.data 就是jwt
   let res = await emailLoginApi(data)
   if (res.code) {
     message.error(res.msg)
     return
   }
   message.success(res.msg)
-  return
+  let userInfo = parseToken(res.data)
+  userInfo.token = res.data
+  globalStore.setUserInfo(userInfo)
+
+  // 登录成功之后需要进行跳转，记录用户上一个页面，如果有则登录后跳转到上一个页面，默认跳转到home
+  let redirect_url = route.query.redirect_url
+  if (redirect_url === undefined) {
+    setTimeout(() => {
+      router.push({name: "home"})
+    }, 200)
+  } else {
+    setTimeout(() => {
+      router.push({path: redirect_url})
+    }, 1000)
+  }
+
 }
 </script>
 
