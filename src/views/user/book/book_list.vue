@@ -74,7 +74,7 @@
 <script setup>
 import {reactive} from "vue";
 import {getNowFormatDate} from "@/utils/date";
-import {borrowBookApi, bookListApi, queryByBookNameApi, queryByAuthorApi, queryByPressApi} from "@/api/user_api";
+import {borrowBookApi, bookListApi, queryByBookNameApi, queryByAuthorApi, queryByPressApi} from "@/api/api";
 import {message} from "ant-design-vue";
 
 console.log(import.meta.env)
@@ -120,10 +120,7 @@ function onSelectChange(selectedKeys){
 }
 
 async function getBookList() {
-  let res = await bookListApi({
-    page_num: data.pageNum,
-    page_size: data.pageSize,
-  })
+  let res = await bookListApi()
   data.list = res.data.data_list
   data.count = res.data.count
   message.success("获取书籍列表成功")

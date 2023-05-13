@@ -29,7 +29,7 @@
 
 <script setup>
 import {useRoute, useRouter} from "vue-router";
-import {userLogoutApi} from "@/api/user_api";
+import {userLogoutApi} from "@/api/api";
 import {message} from "ant-design-vue";
 import {useGlobalStore} from "@/stores/global_store";
 import {reactive} from "vue";

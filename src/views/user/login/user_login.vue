@@ -24,7 +24,7 @@ import {reactive} from "vue";
 import { message } from 'ant-design-vue';
 import axios from "axios";
 import {Ser} from "@/service/service";
-import {userLogin} from "@/api/user_api";
+import {userLogin} from "@/api/api";
 import {parseToken} from "@/utils/jwt";
 import {useGlobalStore} from "@/stores/global_store";
 import {useRoute, useRouter} from "vue-router";

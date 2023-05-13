@@ -16,7 +16,7 @@
 <script setup>
 import {reactive} from "vue";
 import { message } from 'ant-design-vue';
-import {userRegister} from "@/api/user_api";
+import {userRegister} from "@/api/api";
 import {parseToken} from "@/utils/jwt";
 import {useGlobalStore} from "@/stores/global_store";
 import {useRoute, useRouter} from "vue-router";

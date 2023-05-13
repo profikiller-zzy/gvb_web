@@ -19,13 +19,13 @@ export default ({mode}) =>{
   },
   server:{
     proxy:{
-      "/uploads":{
-        target: baseUrl,
-      },
       "/api":{
         target: baseUrl,
       },
     }
+  },
+  optimizeDeps: {
+    exclude: ['fsevents']
   }
 })
 }

@@ -27,7 +27,7 @@ function go_to_user_login() {
     path: "/user_login"
   })
   visible.value = false
-  message.success("跳转至管理员登录界面")
+  message.success("跳转至用户登录界面")
 }
 
 function go_to_admin_login() {
@@ -35,7 +35,7 @@ function go_to_admin_login() {
     path: "/admin_login"
   })
   visible.value = false
-  message.success("跳转至用户登录界面")
+  message.success("跳转至管理员登录界面")
 }
 
 function okHandle() {

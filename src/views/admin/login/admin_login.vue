@@ -20,7 +20,7 @@
 <script setup>
 import {reactive} from "vue";
 import { message } from 'ant-design-vue';
-import {adminLogin} from "@/api/admin_api";
+import {adminLogin} from "@/api/api";
 import {parseToken} from "@/utils/jwt";
 import {useGlobalStore} from "@/stores/global_store";
 import {useRoute, useRouter} from "vue-router";
@@ -32,7 +32,6 @@ const data = reactive({
 const globalStore = useGlobalStore()
 const router = useRouter()
 const route = useRoute()
-
 
 async function adminLoginView(){
   if (data.admin_name.trim() === ""){
@@ -56,7 +55,7 @@ async function adminLoginView(){
   globalStore.setAdminInfo(adminInfo)
 
   setTimeout(() => {
-      router.push({path: "/admin"})
+      router.push({path: "/admin/user_list"})
     }, 200)
 }
 </script>

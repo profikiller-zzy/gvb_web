@@ -16,8 +16,12 @@ export function userRegister(data){
 }
 
 // 用户列表
-export function bookListApi(query){
-  return Ser.get("/api/book_list/", query)
+export function userListApi(params){
+  return Ser.get("/api/user_list/", {params})
+}
+
+export function bookListApi(params){
+  return Ser.get("/api/book_list/", {params})
 }
 
 // 用户借书
@@ -26,7 +30,7 @@ export function borrowBookApi(bookId){
 }
 
 // 用户借阅记录
-export function myBorrowRecordApi(bookId){
+export function myBorrowRecordApi(){
   return Ser.get(`/api/user_borrow_record_list`)
 }
 
@@ -69,13 +73,17 @@ export function adminLogin(data){
   return Ser.post("/api/admin_login/", data)
 }
 
-export function removeBookApi(data){
-  return Ser.delete("/api/book_remove/", data)
+export function removeBookApi(id_list){
+  return Ser.delete("/api/book_remove/", {data: id_list})
 }
 
 export function createBookApi(data){
-  return Ser.post("/api/book_create/", data)
+  return Ser.put("/api/book_create/", data)
 }
 export function updateBookApi(bookId, data){
   return Ser.post(`/api/book_update/${bookId}`, data)
+}
+
+export function deleteUserApi(userId){
+  return Ser.delete(`/api/user_delete/${userId}`)
 }

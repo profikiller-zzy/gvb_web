@@ -35,7 +35,7 @@ const data = reactive({
       id: 2,
       icon: "icon-tushu",
       title: "图书列表", // 菜单名
-      routeName: "admin_book_list", // 这里路由名称为空，因为点击不会跳转，而是展开它的子菜单
+      routeName: "admin_book_list",
       children :[],
     },
   ]

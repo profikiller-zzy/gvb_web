@@ -65,7 +65,7 @@
 <script setup>
 import {reactive} from "vue";
 import {getNowFormatDate} from "@/utils/date";
-import {myBorrowRecordApi, renewBookApi, returnBookApi} from "@/api/user_api";
+import {myBorrowRecordApi, renewBookApi, returnBookApi} from "@/api/api";
 import {message} from "ant-design-vue";
 
 console.log(import.meta.env)

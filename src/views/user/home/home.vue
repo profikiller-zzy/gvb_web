@@ -89,7 +89,7 @@
 <script setup>
 import {reactive, ref} from "vue";
 import {useGlobalStore} from "@/stores/global_store";
-import {updateMyInformationApi, getMyInformationApi, updatePasswordApi} from "@/api/user_api";
+import {updateMyInformationApi, getMyInformationApi, updatePasswordApi} from "@/api/api";
 import {message} from "ant-design-vue";
 
 const visible = ref(false)
