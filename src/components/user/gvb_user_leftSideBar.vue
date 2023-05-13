@@ -5,7 +5,7 @@
       <div class="gvb_admin_logo">
         <img src="http://rt8ywig7i.bkt.clouddn.com/background_1.jpg" alt="">
       </div>
-      <div class="gvb_admin_title" align="center">profikiller的个人博客后台系统</div>
+      <div class="gvb_admin_title" align="center">图书馆借阅管理系统</div>
       <gvb_admin_left-side-bar_menu></gvb_admin_left-side-bar_menu>
     </div>
 
@@ -16,7 +16,7 @@
 
 <script>
 import {defineComponent} from "vue";
-import Gvb_admin_leftSideBar_menu from "@/components/admin/gvb_admin_leftSideBar_menu.vue";
+import Gvb_admin_leftSideBar_menu from "@/components/user/gvb_user_leftSideBar_menu.vue";
 
 export default defineComponent({
   components: {Gvb_admin_leftSideBar_menu}

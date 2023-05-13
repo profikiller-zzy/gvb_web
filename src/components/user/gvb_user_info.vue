@@ -6,24 +6,18 @@
     <div class="drop-menu">
       <a-dropdown :placement="bottomLeft">
         <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-          用户名 <a-icon type="down" />
+          {{data.nick_name}} <a-icon type="down" />
           <i class="fa fa-caret-down"></i>
         </a>
       <template #overlay>
         <a-menu @click="menuItemClick">
-          <a-menu-item key = "user_center">
-            <a href="javascript:;">个人中心</a>
+          <a-menu-item key = "my_borrow_record">
+            <a href="javascript:;">我的借阅记录</a>
           </a-menu-item>
-          <a-menu-item key = "my_message">
-            <a href="javascript:;">我的消息</a>
-          </a-menu-item>
-          <a-menu-item key = "article_list">
-            <a href="javascript:;">文章列表</a>
-          </a-menu-item>
-          <a-menu-item key = "login">
+          <a-menu-item key = "user_login">
             <a href="javascript:;">返回登录</a>
           </a-menu-item>
-          <a-menu-item key = "logout">
+          <a-menu-item key = "user_logout">
             <a href="javascript:;">注销退出</a>
           </a-menu-item>
         </a-menu>
@@ -35,7 +29,14 @@
 
 <script setup>
 import {useRoute, useRouter} from "vue-router";
+import {userLogoutApi} from "@/api/user_api";
+import {message} from "ant-design-vue";
+import {useGlobalStore} from "@/stores/global_store";
+import {reactive} from "vue";
 
+const data = reactive({
+  nick_name: ""
+})
 const router = useRouter()
 const route = useRoute()
 const props = defineProps({
@@ -46,11 +47,23 @@ const props = defineProps({
   }
 })
 
-function menuItemClick({key}) {
-  if (key == "logout"){
-    console.log("logout")
+function loadNickName() {
+  data.nick_name = useGlobalStore().userInfo.nick_name
+}
+
+async function menuItemClick({key}) {
+  if (key == "user_logout"){
+    let res = await userLogoutApi()
+    if (res.code) {
+      message.error("注销失败")
+      return
+    }
+    message.success("注销成功")
+    router.push({
+      name: "user_login"
+    })
     return
-  } else if(key === "login") {
+  } else if(key === "user_login") {
     router.push(
         {
           name: key,
@@ -65,6 +78,8 @@ function menuItemClick({key}) {
     )
   }
 }
+
+loadNickName()
 </script>
 
 <style>

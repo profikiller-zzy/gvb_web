@@ -7,6 +7,6 @@ export function parseToken(token) {
     // escape对解析后的字符串进行编码，确保在所有计算机上都能读取该字符串
     // decodeURIComponent对编码后的字符串进行解码，还原为原始字符串
     // JSON.parse将解码后的字符串解析为JSON对象，这个JSON对象就是JWT Token中包含的用户信息
-    let userInfo = JSON.parse(decodeURIComponent(escape(window.atob(payload.replace(/-/g, "+").replace(/_/g, "/")))))
-    return userInfo
+    let info = JSON.parse(decodeURIComponent(escape(window.atob(payload.replace(/-/g, "+").replace(/_/g, "/")))))
+    return info
 }

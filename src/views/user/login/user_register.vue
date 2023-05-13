@@ -1,29 +1,22 @@
 <template>
   <div class="container">
     <form action="#" class="login-form">
-      <h2>登 录</h2>
+      <h2>注 册</h2>
       <a-input type="text" v-model:value="data.user_name" placeholder="请输入用户名">
-        <template>
-          <i class="icon icon-yonghuming"></i>
-        </template>
       </a-input>
       <a-input type="password" v-model:value="data.password" placeholder="请输入密码">
-        <template>
-          <i class="icon icon-mima"></i>
-        </template>
       </a-input>
-      <a-button type="submit" @click="emailLogin">登录</a-button>
+      <a-input type="text" v-model:value="data.nick_name" placeholder="请输入昵称">
+      </a-input>
+      <a-button type="submit" @click="register">注册</a-button>
     </form>
   </div>
 </template>
 
 <script setup>
-import jwt_decode from 'jwt-decode'
 import {reactive} from "vue";
 import { message } from 'ant-design-vue';
-import axios from "axios";
-import {Ser} from "@/service/service";
-import {emailLoginApi} from "@/api/user_api";
+import {userRegister} from "@/api/user_api";
 import {parseToken} from "@/utils/jwt";
 import {useGlobalStore} from "@/stores/global_store";
 import {useRoute, useRouter} from "vue-router";
@@ -31,13 +24,14 @@ import {useRoute, useRouter} from "vue-router";
 const data = reactive({
   user_name: "",
   password: "",
+  nick_name: "",
 })
 const globalStore = useGlobalStore()
 const router = useRouter()
 const route = useRoute()
 
 
-async function emailLogin(){
+async function register(){
   if (data.user_name.trim() === ""){
     message.error("请输入用户名!")
     return
@@ -46,30 +40,21 @@ async function emailLogin(){
     message.error("请输入密码!")
     return
   }
+  if (data.nick_name.trim() === ""){
+    message.error("请输入密码!")
+    return
+  }
 
   // res.data 就是jwt
-  let res = await emailLoginApi(data)
+  let res = await userRegister(data)
   if (res.code) {
     message.error(res.msg)
     return
   }
   message.success(res.msg)
-  let userInfo = parseToken(res.data)
-  userInfo.token = res.data
-  globalStore.setUserInfo(userInfo)
-
-  // 登录成功之后需要进行跳转，记录用户上一个页面，如果有则登录后跳转到上一个页面，默认跳转到home
-  let redirect_url = route.query.redirect_url
-  if (redirect_url === undefined) {
-    setTimeout(() => {
-      router.push({name: "home"})
+  setTimeout(() => {
+      router.push({path: "/user_login"})
     }, 200)
-  } else {
-    setTimeout(() => {
-      router.push({path: redirect_url})
-    }, 1000)
-  }
-
 }
 </script>
 
@@ -92,7 +77,7 @@ body {
 
 .login-form {
   width: 240px;
-  height: 220px;
+  height: 280px;
   display: flex;
   flex-direction: column;
   padding: 40px;
@@ -158,5 +143,6 @@ body {
 .login-form button:hover {
   background-color: rgba(12, 80, 38, 0.67);
 }
+
 
 </style>

@@ -44,40 +44,18 @@ const data = reactive({
     }, // 这是个一级菜单项
     {
       id: 2,
-      icon: "icon-yonghu",
-      title: "用户管理", // 菜单名
+      icon: "icon-tushu",
+      title: "图书", // 菜单名
       routeName: "", // 这里路由名称为空，因为点击不会跳转，而是展开它的子菜单
       children :[
         {
           id: 21,
-          icon: "icon-user-list",
-          title: "用户列表", // 菜单名
-          routeName: "user_list", // 路由名称
+          icon: "icon-tushu",
+          title: "图书列表", // 菜单名
+          routeName: "book_list", // 路由名称
         },
-        {
-          id: 22,
-          icon: "icon-tianjiayonghu",
-          title: "添加用户", // 菜单名
-          routeName: "user_create", // 路由名称
-        }
       ],
     },
-
-      {
-      id: 3,
-      icon: "icon-xitongcaidan",
-      title: "系统菜单", // 菜单名
-      routeName: "", // 这里路由名称为空，因为点击不会跳转，而是展开它的子菜单
-      children :[
-        {
-          id: 31,
-          icon: "icon-xitongpeizhi",
-          title: "系统配置", // 菜单名
-          routeName: "system_config", // 路由名称
-        },
-      ],
-    } // 这是个二级菜单
-
   ]
 })
 const router = useRouter()

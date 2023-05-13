@@ -1,10 +1,9 @@
 <template>
-  <div>系统配置</div>
+  <div>user_list</div>
 </template>
 
 <script>
 </script>
 
-<style scoped>
-
+<style lang="scss">
 </style>

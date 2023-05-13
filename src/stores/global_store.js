@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
 import { message } from 'ant-design-vue';
+import router from "@/router";
 
 const data = {
   token: "",
   avatar: "",
   exp: 1683726766,
   nick_name: "",
-  role: 0,
   user_id: 0,
 }
 export const useGlobalStore = defineStore('gvb', {
@@ -18,8 +18,11 @@ export const useGlobalStore = defineStore('gvb', {
         avatar: "",
         exp: 1683726766,
         nick_name: "",
-        role: 0,
         user_id: 0,
+      },
+      adminInfo: {
+        token: "",
+        admin_id: 0,
       }
     }
   },
@@ -58,6 +61,14 @@ export const useGlobalStore = defineStore('gvb', {
       // 持久化
       localStorage.setItem("userInfo", JSON.stringify(info))
     },
+    setAdminInfo(info) {
+      // 将用户信息存储在本地
+      this.$patch({
+        adminInfo : info,
+      })
+      // 持久化
+      localStorage.setItem("adminInfo", JSON.stringify(info))
+    },
     // 加载userInfo，主要是判断登录状态有没有过期
     loadUserInfo() {
       let info = localStorage.getItem("userInfo")
@@ -71,11 +82,27 @@ export const useGlobalStore = defineStore('gvb', {
       let now = new Date().getTime()
       if ( (exp - now) < 0) {
         // 过期了
-        message.warn("登录状态已经过期")
-        // TODO 将当前页面跳转到登录页面
-        return;
+        return true;
       }
       this.setUserInfo(userInfo)
+      return false
+    },
+    loadAdminInfo() {
+      let info = localStorage.getItem("adminInfo")
+      if (info === null){
+        return
+      }
+      // JSON解析
+      let adminInfo = JSON.parse(info)
+      // 判断时间是否过期(后端传过来的时间以秒为单位，而前端以毫秒为单位，所以要乘1000)
+      let adminExp = adminInfo.exp * 1000
+      let now = new Date().getTime()
+      if ( (adminExp - now) < 0) {
+        // 过期了
+        return true;
+      }
+      this.setAdminInfo(adminInfo)
+      return false
     }
   }
 })

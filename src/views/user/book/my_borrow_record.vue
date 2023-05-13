@@ -1,17 +1,5 @@
 <template>
   <div class="gvb_container">
-    <div class="gvb_search">
-      <a-input-search
-        placeholder="搜索用户昵称"
-        style="width: 400px"
-      />
-    </div>
-    <div class="gvb_actions">
-      <a-button type="primary">添加用户</a-button>
-      <a-button type="danger"
-                v-if="data.selectedRowKeys.length"
-                @click="removeInBatches">批量删除</a-button>
-    </div>
     <div class="gvb_tables">
        <a-table
            :rowKey="'id'"
@@ -41,9 +29,22 @@
             <span>{{getNowFormatDate(record.created_at)}}</span>
           </template>
 
+          <template v-else-if="column.key === 'return_at'">
+            <span v-if="record.return_at.Valid===true">{{getNowFormatDate(record.return_at.Time)}}</span>
+            <span v-else>未归还</span>
+          </template>
+
+          <template v-else-if="column.key === 'expire_at'">
+            <span>{{getNowFormatDate(record.expire_at)}}</span>
+          </template>
+
           <template v-else-if="column.key === 'action'">
-            <a-button type="primary" class="gvb_user_list_action update">编辑</a-button>
-            <a-button type="danger" class="gvb_user_list_action delete">删除</a-button>
+            <span>
+              <a-divider type="vertical" />
+                <a-button v-if="record.status==='被借阅' && record.return_at.Valid===false" @click="returnBook(record.id)">归还</a-button>
+                <a-button v-if="record.status==='被借阅' && record.return_at.Valid===false" @click="renewBook(record.id)">续借</a-button>
+              <a-divider type="vertical" />
+            </span>
           </template>
         </template>
       </a-table>
@@ -58,13 +59,14 @@
         :showSizeChanger = "false"
       />
     </div>
-  </div>
+</div>
 </template>
 
 <script setup>
 import {reactive} from "vue";
 import {getNowFormatDate} from "@/utils/date";
-import {userListApi} from "@/api/user_api";
+import {myBorrowRecordApi, renewBookApi, returnBookApi} from "@/api/user_api";
+import {message} from "ant-design-vue";
 
 console.log(import.meta.env)
 
@@ -76,14 +78,16 @@ const data = reactive(
     {
       columns:[
         {name: 'ID', dataIndex: 'id', key: 'id'},
-        {title: '昵称', dataIndex: 'nick_name', key: 'nick_name'},
-        {title: '头像', dataIndex: 'avatar', key: 'avatar'},
-        {title: '邮箱', dataIndex: 'email', key: 'email'},
-        {title: '地址', dataIndex: 'addr', key: 'addr'},
-        {title: 'ip', dataIndex: 'ip', key: 'ip'},
-        {title: '角色', dataIndex: 'role', key: 'role'},
-        {title: '注册来源', dataIndex: 'sign_status', key: 'sign_status'},
-        {title: '注册时间', dataIndex: 'created_at', key: 'created_at'},
+        {title: '封面', dataIndex: 'avatar', key: 'avatar'},
+        {title: '书名', dataIndex: 'book_name', key: 'book_name'},
+        {title: 'ISBN', dataIndex: 'isbn', key: 'isbn'},
+        {title: '作者', dataIndex: 'author', key: 'author'},
+        {title: '出版社', dataIndex: 'press', key: 'press'},
+        {title: '价格', dataIndex: 'price', key: 'price'},
+        {title: '状态', dataIndex: 'status', key: 'status'},
+        {title: '借阅时间', dataIndex: 'created_at', key: 'created_at'},
+        {title: '归还时间', dataIndex: 'return_at', key: 'return_at'},
+        {title: '到期时间', dataIndex: 'expire_at', key: 'expire_at'},
         {title: '操作', dataIndex: 'action', key: 'action'},
       ],
       list:[],
@@ -95,18 +99,37 @@ function onSelectChange(selectedKeys){
   data.selectedRowKeys = selectedKeys
 }
 
-async function getUserList() {
-  let res = await userListApi({})
+async function getBorrowRecord() {
+  let res = await myBorrowRecordApi({
+    page_num: data.pageNum,
+    page_size: data.pageSize,
+  })
   data.list = res.data.data_list
   data.count = res.data.count
-  console.log(res)
+  message.success("获取我的借阅记录成功")
 }
 
-getUserList()
-
-// 批量删除
-function removeInBatches(){
+async function returnBook(book_id) {
+  let res = await returnBookApi(book_id)
+  if (res.data.code) { // 归还失败
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
 }
+
+async function renewBook(book_id) {
+  let res = await renewBookApi(book_id)
+  if (res.data.code) {
+    message.error(res.msg)
+    return
+  }
+  message.success(res.msg)
+}
+
+getBorrowRecord()
+
+// 借阅图书
 </script>
 
 <style lang="scss">

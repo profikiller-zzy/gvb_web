@@ -7,7 +7,6 @@ export const Ser = axios.create({
     baseURL: "",
     headers: {
         "Content-Type" : "application/json",
-        "token": `Bearer ${localStorage.getItem("jwt_token")}`
     }
     }
 )
@@ -16,6 +15,7 @@ export const Ser = axios.create({
 Ser.interceptors.request.use(request => {
     const store = useGlobalStore()
     request.headers["token"] = store.userInfo.token
+    request.headers["admin_token"] = store.adminInfo.token
     return request
 })
 
